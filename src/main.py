@@ -6,6 +6,7 @@ import ast
 import random
 import traceback
 from PySide6.QtWidgets import *
+from PySide6.QtGui import QIcon
 
 
 def errorhandling(exc_type, exc_value, exc_tb):
@@ -90,9 +91,12 @@ class Window(QWidget):
         self.setFixedWidth(318)
 
         self.add = QPushButton("Add header")
+        self.add.setIcon(QIcon("src/icons/add.png"))
         self.add.clicked.connect(self.addheader)
 
-        self.btn_start = QPushButton("Execute")
+        self.btn_start = QPushButton("Send")
+        self.btn_start.setIcon(QIcon("src/icons/send.png"))
+
         self.btn_start.clicked.connect(self.execute)
         self.amount = QLineEdit()
         self.amount.setPlaceholderText("Amount...")
@@ -102,6 +106,7 @@ class Window(QWidget):
 
         self.copytocb = QPushButton("Copy response to clipboard")
         self.copytocb.clicked.connect(self.copy)
+        self.copytocb.setIcon(QIcon("src/icons/clipboard.png"))
         self.timetaken = QLabel("")
         self.timetaken.setContentsMargins(0, 0, 0, 0)
         
@@ -115,8 +120,10 @@ class Window(QWidget):
         self.vlayout = QVBoxLayout()
         self.header_holder = QVBoxLayout()
         self.payload = QTextEdit()
-        self.payload.setPlaceholderText("Payload (JSON format)...")
+        self.payload.setPlaceholderText("JSON body...")
         self.payload.setMaximumHeight(100)
+
+        self.methodlabel = QLabel("Select method:")
 
         self.payload.setTabStopDistance(4 * self.payload.fontMetrics().horizontalAdvance(' '))
 
@@ -131,6 +138,7 @@ class Window(QWidget):
         self.vlayout.addWidget(self.add)
         self.vlayout.addLayout(self.header_holder)
         self.vlayout.addWidget(self.payload)
+        self.vlayout.addWidget(self.methodlabel)
         self.vlayout.addWidget(self.methods)
         self.vlayout.addWidget(self.url)
         self.vlayout.addWidget(self.amount)
@@ -147,7 +155,7 @@ class Window(QWidget):
         self.container = {}
 
         #STYLES:
-        self.btn_start.setStyleSheet("background-color:rgb(19, 61, 134)")
+        self.btn_start.setStyleSheet("background-color:rgb(19, 80, 134)")
 
     def exeption(self, type, value):
         self.timetaken.setText(f"An exeption occurred: {type}")
@@ -173,8 +181,9 @@ class Window(QWidget):
         inpkey.setPlaceholderText("header name")
         inpvalue = QLineEdit()
         inpvalue.setPlaceholderText("value name")
-        remove = QPushButton("X")
+        remove = QPushButton("")
         remove.clicked.connect(self.removeheader)
+        remove.setIcon(QIcon("src/icons/remove.png"))
         remove.setStyleSheet("background-color:rgb(134, 19, 19)")
         remove.setFixedWidth(25)
         self.headers[inpkey] = inpvalue
